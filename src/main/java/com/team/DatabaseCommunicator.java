@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
@@ -17,7 +16,7 @@ public class DatabaseCommunicator {
 
     private DatabaseCommunicator(){}
 
-    private Connection conn = null;
+    private Connection connection = null;
     private Statement stmt = null;
 
     public static DatabaseCommunicator getInstance() {
@@ -31,10 +30,13 @@ public class DatabaseCommunicator {
 
         try {
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:5432/flower_store",
-                            "postgres", "123");
-            stmt = conn.createStatement();
+            connection = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:5432/" +
+                                    "bank_db",
+                            "postgres",
+                            "postgres"
+                    );
+            stmt = connection.createStatement();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
