@@ -56,20 +56,4 @@ public abstract class AbstractBankService implements BankService {
             wr.deposit(to, transferAmount);
         }
     }
-
-    @Override
-    public void displayAccount(Account account) {
-        System.out.println(account);
-    }
-
-    @Override
-    public Account updateAccount(Account account, String customerName, String address, String mobile, String email) {
-
-        account.setCustomerName(customerName);
-        account.setAddress(address);
-        account.setMobile(mobile);
-        account.setEmail(email);
-        System.out.println("\nAccount Details Updated Successfully in your Kaspi Bank Account!!!\n");
-        return account;
-    }
 }

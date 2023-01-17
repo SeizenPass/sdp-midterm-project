@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 @Data
 public class ATM {
+    //Strategy and facade
     private BankService currentService;
     private Account currentAccount;
     private BankService[] services = new BankService[]{new KaspiBankService(), new HalykBankService(),

@@ -12,9 +12,5 @@ public interface BankService {
 
     void transferFund(Account from, Account to, double transferAmount) throws InvalidAmountException, InsufficientAmountException ;
 
-    void displayAccount(Account account);
-
-    Account updateAccount(Account account, String customerName, String address, String mobile, String email);
-
     String getBankCode();
 }
