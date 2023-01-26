@@ -1,9 +1,7 @@
 package com.team;
 
 import com.team.bank.ATM;
-import com.team.command.ChangeBankCommand;
-import com.team.command.CreateAccountCommand;
-import com.team.command.LoginCommand;
+import com.team.command.*;
 
 import java.util.Scanner;
 
@@ -15,7 +13,7 @@ public class Application {
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
                 if (atm.getCurrentService() == null) {
-                    atm.chooseBankService(sc);
+                    new ChooseBankCommand(atm, sc).execute();
                     continue;
                 }
                 if (atm.getCurrentAccount() == null) {
@@ -44,19 +42,19 @@ public class Application {
                     continue;
                 }
                 if (command.equals("balance")) {
-                    atm.checkBalance();
+                    new CheckBalanceCommand(atm, sc).execute();
                     continue;
                 }
                 if (command.equals("deposit")) {
-                    atm.deposit(sc);
+                    new DepositCommand(atm, sc).execute();
                     continue;
                 }
                 if (command.equals("withdraw")) {
-                    atm.withdraw(sc);
+                    new WithdrawCommand(atm, sc).execute();
                     continue;
                 }
                 if (command.equals("transfer")) {
-                    atm.transfer(sc);
+                    new TransferCommand(atm, sc).execute();
                     continue;
                 }
             }
