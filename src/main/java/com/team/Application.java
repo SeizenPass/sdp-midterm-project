@@ -2,13 +2,25 @@ package com.team;
 
 import com.team.bank.ATM;
 import com.team.command.*;
+import com.team.handler.BankChosenHandler;
+import com.team.handler.Handler;
+import com.team.handler.Request;
+import com.team.handler.UserAuthenticatedHandler;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Application {
+
+    public static final String BALANCE_KEY = "balance", DEPOSIT_KEY = "deposit",
+                     WITHDRAW_KEY = "withdraw", TRANSFER_KEY = "transfer";
+
+
     public static void main(String[] args) {
         ATM atm = new ATM();
         DatabaseCommunicator.getInstance().connect();
+        Map<String, Handler> handlerMap = getHandlerMap();
         print("Welcome to ATM Console.");
         try (Scanner sc = new Scanner(System.in)) {
             while (true) {
@@ -41,24 +53,38 @@ public class Application {
                     print("- transfer (transfer money)");
                     continue;
                 }
-                if (command.equals("balance")) {
-                    new CheckBalanceCommand(atm, sc).execute();
-                    continue;
+                Handler h = handlerMap.get(command);
+                ATMCommand cmd = null;
+                switch (command) {
+                    case BALANCE_KEY:
+                        cmd = new CheckBalanceCommand(atm, sc);
+                        break;
+                    case DEPOSIT_KEY:
+                        cmd = new DepositCommand(atm, sc);
+                        break;
+                    case WITHDRAW_KEY:
+                        cmd = new WithdrawCommand(atm, sc);
+                        break;
+                    case TRANSFER_KEY:
+                        cmd = new TransferCommand(atm, sc);
+                        break;
                 }
-                if (command.equals("deposit")) {
-                    new DepositCommand(atm, sc).execute();
-                    continue;
-                }
-                if (command.equals("withdraw")) {
-                    new WithdrawCommand(atm, sc).execute();
-                    continue;
-                }
-                if (command.equals("transfer")) {
-                    new TransferCommand(atm, sc).execute();
-                    continue;
+                if (cmd != null) {
+                    if (h != null) {
+                        h.handle(new Request(cmd));
+                    } else cmd.execute();
                 }
             }
         }
+    }
+
+    public static Map<String, Handler> getHandlerMap() {
+        Map<String, Handler> handlerMap = new HashMap<>();
+        handlerMap.put(BALANCE_KEY, new BankChosenHandler(new UserAuthenticatedHandler(null)));
+        handlerMap.put(WITHDRAW_KEY, new BankChosenHandler(new UserAuthenticatedHandler(null)));
+        handlerMap.put(DEPOSIT_KEY, new BankChosenHandler(new UserAuthenticatedHandler(null)));
+        handlerMap.put(TRANSFER_KEY, new BankChosenHandler(new UserAuthenticatedHandler(null)));
+        return handlerMap;
     }
 
     public static void print(String s) {
