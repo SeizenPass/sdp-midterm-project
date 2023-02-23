@@ -3,6 +3,7 @@ package com.team.command;
 import com.team.bank.ATM;
 import com.team.bank.Account;
 import com.team.bank.DatabaseWriter;
+import com.team.state.AuthorizedApplicationState;
 
 import java.util.Scanner;
 
@@ -37,6 +38,7 @@ public class LoginCommand extends ATMCommand {
         } else {
             atm.setCurrentAccount(account);
             System.out.println("Welcome back, " + atm.getCurrentAccount().getCustomerName() + ".");
+            atm.setApplicationState(new AuthorizedApplicationState(atm, sc));
         }
     }
 

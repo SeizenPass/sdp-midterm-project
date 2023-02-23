@@ -1,6 +1,7 @@
 package com.team.command;
 
 import com.team.bank.ATM;
+import com.team.state.PendingApplicationState;
 
 import java.util.Scanner;
 
@@ -32,6 +33,7 @@ public class ChooseBankCommand extends ATMCommand {
         atm.setCurrentService(atm.getServices()[option]);
         print("You chose " + atm.getBanks()[option] + ".");
         atm.setCurrentAccount(null);
+        atm.setApplicationState(new PendingApplicationState(atm, sc));
     }
 
     public ChooseBankCommand(ATM atm, Scanner scanner) {
