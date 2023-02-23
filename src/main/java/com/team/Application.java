@@ -19,7 +19,6 @@ public class Application {
     public static void main(String[] args) {
         ATM atm = new ATM();
         DatabaseCommunicator.getInstance().connect();
-        Map<String, Handler> handlerMap = getHandlerMap();
         print("Welcome to ATM Console.");
         try (Scanner sc = new Scanner(System.in)) {
             atm.setApplicationState(new DefaultApplicationState(atm, sc));
